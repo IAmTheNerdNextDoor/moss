@@ -66,13 +66,9 @@ x86) before running on bare metal.
 ## Building and Running
 
 ### Prerequisites
-You will need a nightly Rust toolchain and QEMU for aarch64 emulation.
+You will need QEMU for aarch64 emulation.
 
 ```bash
-# Install Rust Nightly
-rustup toolchain install nightly
-rustup component add rust-src llvm-tools-preview
-
 # Install QEMU (Ubuntu/Debian)
 sudo apt install qemu-system-aarch64
 ```

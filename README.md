@@ -77,7 +77,18 @@ rustup component add rust-src llvm-tools-preview
 sudo apt install qemu-system-aarch64
 ```
 
-Additionally you will need a version of the [aarch64-none-elf](https://developer.arm.com/Tools%20and%20Software/GNU%20Toolchain) toolchain installed. To do this, download the correct release of `aarch64-none-elf` onto your computer, unpack it, then export the `bin` folder to path.
+Additionally you will need a version of the [aarch64-none-elf](https://developer.arm.com/Tools%20and%20Software/GNU%20Toolchain) toolchain installed.
+
+#### Any OS
+To install aarch64-none-elf on any os, download the correct release of `aarch64-none-elf` onto your computer, unpack it, then export the `bin` folder to path.
+
+#### NixOS
+
+Run the following command
+
+```bash
+nix shell nixpkgs#pkgsCross.aarch64-embedded.stdenv.cc nixpkgs#pkgsCross.aarch64-embedded.stdenv.cc.bintools
+```
 
 ### Running via QEMU
 

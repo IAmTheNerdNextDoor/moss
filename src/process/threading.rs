@@ -136,15 +136,15 @@ pub async fn sys_futex(
             let nr_wake = val as usize;
             let mut woke = 0;
 
-            if let Some(table) = FUTEX_TABLE.get() {
-                if let Some(waitq_arc) = table.lock_save_irq().get(&uaddr.value()).cloned() {
-                    let mut waitq = waitq_arc.lock_save_irq();
-                    for _ in 0..nr_wake {
-                        // Record a pending wake-up and attempt to wake a single waiter.
-                        waitq.wakeups = waitq.wakeups.saturating_add(1);
-                        waitq.wakers.wake_one();
-                        woke += 1;
-                    }
+            if let Some(table) = FUTEX_TABLE.get()
+                && let Some(waitq_arc) = table.lock_save_irq().get(&uaddr.value()).cloned()
+            {
+                let mut waitq = waitq_arc.lock_save_irq();
+                for _ in 0..nr_wake {
+                    // Record a pending wake-up and attempt to wake a single waiter.
+                    waitq.wakeups = waitq.wakeups.saturating_add(1);
+                    waitq.wakers.wake_one();
+                    woke += 1;
                 }
             }
 

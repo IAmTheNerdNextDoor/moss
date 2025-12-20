@@ -81,6 +81,8 @@ pub async fn sys_futex(
     // Strip PRIVATE flag if present
     let cmd = op & !FUTEX_PRIVATE_FLAG;
 
+    // TODO: support bitset variants properly
+
     match cmd {
         FUTEX_WAIT | FUTEX_WAIT_BITSET => {
             // Ensure the wait-queue exists *before* we begin checking the

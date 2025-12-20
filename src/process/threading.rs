@@ -66,6 +66,8 @@ pub async fn sys_set_robust_list(head: TUA<RobustListHead>, len: usize) -> Resul
 
 const FUTEX_WAIT: i32 = 0;
 const FUTEX_WAKE: i32 = 1;
+const FUTEX_WAIT_BITSET: i32 = 9;
+const FUTEX_WAKE_BITSET: i32 = 10;
 const FUTEX_PRIVATE_FLAG: i32 = 128;
 
 pub async fn sys_futex(
@@ -80,7 +82,7 @@ pub async fn sys_futex(
     let cmd = op & !FUTEX_PRIVATE_FLAG;
 
     match cmd {
-        FUTEX_WAIT => {
+        FUTEX_WAIT | FUTEX_WAIT_BITSET => {
             // Ensure the wait-queue exists *before* we begin checking the
             // futex word so that a racing FUTEX_WAKE cannot miss us.  This
             // avoids the classic lost-wake-up race where a waker runs between
@@ -128,7 +130,7 @@ pub async fn sys_futex(
             Ok(0)
         }
 
-        FUTEX_WAKE => {
+        FUTEX_WAKE | FUTEX_WAKE_BITSET => {
             let nr_wake = val as usize;
             let mut woke = 0;
 
